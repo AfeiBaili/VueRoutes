@@ -6,6 +6,11 @@ import {mapState} from "vuex";
 export default {
   name: 'App',
   components: {},
+  data() {
+    return {
+      isHome: true,
+    }
+  },
   computed: {
     ...mapState("Routes", ["routes"])
   },
@@ -15,10 +20,10 @@ export default {
     let images = [
       {path: "/background01.jpg", color: "#8E9B70"},
       {path: "/background02.jpg", color: "#A34537"},
-      {path: "/background03.jpg", color: "#24242E"},
+      {path: "/background03.jpg", color: "#903732"},
       {path: "/background04.jpg", color: "#5092AC"},
-      {path: "/background05.jpg", color: "#26271E"},
-      {path: "/background06.jpg", color: "#0F120F"},
+      {path: "/background05.jpg", color: "#FD5839"},
+      {path: "/background06.jpg", color: "#111A00"},
       {path: "/background07.jpg", color: "#0B212E"},
       {path: "/background08.jpg", color: "#96323A"},
       {path: "/background09.jpg", color: "#6D9BBC"},
@@ -38,15 +43,23 @@ export default {
 <template>
   <div id="app" ref="app">
     <div class="filter">
-      <div class="nav">
-        <div ref="title" class="title">目录列表</div>
-        <div v-for="i in routes" :key="i.pathName" class="item-list">
-          <router-link ref="item" :to="`/${i.pathName}`" active-class="active" class="item">{{ i.name }}
-            <div class="item-background"></div>
-          </router-link>
+      <!--   导航区域   -->
+      <transition appear name="nav">
+        <div v-show="!isHome" class="nav">
+          <div ref="title" @click="isHome = true" class="title iconfont icon-fanhui">目录列表</div>
+          <div v-for="i in routes" :key="i.pathName" class="item-list">
+            <router-link ref="item" :to="`/${i.pathName}`" active-class="active" class="item">{{ i.name }}
+              <div class="item-background"></div>
+            </router-link>
+          </div>
         </div>
-      </div>
+      </transition>
+      <!--   视图区域   -->
       <div class="main">
+        <transition appear name="main">
+          <div v-show="isHome" class="title iconfont icon-fanhui-copy" @click="isHome = false">开始
+          </div>
+        </transition>
         <router-view></router-view>
       </div>
     </div>
@@ -54,6 +67,8 @@ export default {
 </template>
 
 <style>
+@import "assets/fonts/iconfont.css";
+
 * {
   margin: 0;
   padding: 0;
@@ -92,8 +107,14 @@ export default {
   padding: 20px;
   color: white;
   text-shadow: rgba(0, 0, 0, 0.1) 2px 2px 2px;
+  user-select: none;
 
   border-left: gray 10px solid;
+  transition: 0.5s;
+}
+
+.nav .title:hover {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .nav .item {
@@ -121,16 +142,94 @@ export default {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: -1;
 
-  transition: 0.5s;
+  transition: 0.2s;
 }
 
 .nav .item:hover .item-background::before {
   width: 100%;
 }
 
-.nav .active {
-  color: #a6a6a6;
-  text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
+#app .nav .active {
+  color: gray;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.nav .icon-fanhui:after {
+  margin-left: 20px;
+  text-shadow: #0000 0 0 0;
+
+  transition: 0.2s;
+}
+
+.nav .icon-fanhui:hover:after {
+  margin-left: 0;
+  text-shadow: #000 0 0 20px;
+}
+
+.main .title {
+  color: white;
+
+  font-size: 3em;
+  font-weight: bolder;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  user-select: none;
+}
+
+.main .icon-fanhui-copy::after {
+  position: absolute;
+  top: 10px;
+  right: -50px;
+  animation: start-arrow 1s infinite alternate;
+}
+
+@keyframes start-arrow {
+  from {
+    transform: translateX(5px);
+  }
+  to {
+    transform: translateX(-10px);
+  }
+}
+
+.main-enter-active {
+  animation: main-show 0.5s;
+}
+
+.main-leave-active {
+  animation: main-show 0.5s reverse;
+}
+
+@keyframes main-show {
+  from {
+    opacity: 0;
+    transform: translate(40vw, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.nav-enter-active {
+  animation: nav-show 0.5s;
+}
+
+.nav-leave-active {
+  animation: nav-show 0.5s reverse;
+}
+
+@keyframes nav-show {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 </style>
