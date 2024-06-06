@@ -13,7 +13,7 @@ export default {
   router,
   mounted() {
     let images = [
-      {path: "/background01.jpg", color: "#242A26"},
+      {path: "/background01.jpg", color: "#8E9B70"},
       {path: "/background02.jpg", color: "#A34537"},
       {path: "/background03.jpg", color: "#24242E"},
       {path: "/background04.jpg", color: "#5092AC"},
@@ -26,6 +26,11 @@ export default {
     const random = parseInt(Math.random() * images.length + "");
     this.$refs.app.style.background =
         `url("./background${images[random].path}") no-repeat center center / cover`;
+    this.$refs.title.style.borderLeft = `${images[random].color} 10px solid`;
+    for (let i = 0; i < this.$refs.item.length; i++) {
+      this.$refs.item[i].$el.style.borderLeft = `${images[random].color} 10px solid`;
+    }
+
   }
 }
 </script>
@@ -34,7 +39,7 @@ export default {
   <div id="app" ref="app">
     <div class="filter">
       <div class="nav">
-        <div class="title" ref="title">目录列表</div>
+        <div ref="title" class="title">目录列表</div>
         <div v-for="i in routes" :key="i.pathName" class="item-list">
           <router-link ref="item" :to="`/${i.pathName}`" active-class="active" class="item">{{ i.name }}
             <div class="item-background"></div>
@@ -124,7 +129,8 @@ export default {
 }
 
 .nav .active {
-  color: #995646;
+  color: #a6a6a6;
+  text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
 }
 
 </style>
