@@ -8,7 +8,7 @@ export default {
   components: {},
   data() {
     return {
-      isHome: true,
+      isHome: false,
     }
   },
   computed: {
@@ -46,7 +46,7 @@ export default {
       <!--   导航区域   -->
       <transition appear name="nav">
         <div v-show="!isHome" class="nav">
-          <div ref="title" @click="isHome = true" class="title iconfont icon-fanhui">目录列表</div>
+          <div ref="title" class="title iconfont icon-fanhui" @click="isHome = true">目录列表</div>
           <div v-for="i in routes" :key="i.pathName" class="item-list">
             <router-link ref="item" :to="`/${i.pathName}`" active-class="active" class="item">{{ i.name }}
               <div class="item-background"></div>
@@ -60,7 +60,7 @@ export default {
           <div v-show="isHome" class="title iconfont icon-fanhui-copy" @click="isHome = false">开始
           </div>
         </transition>
-        <router-view></router-view>
+        <router-view v-show="!isHome" class="view"></router-view>
       </div>
     </div>
   </div>
@@ -77,6 +77,8 @@ export default {
 #app {
   width: 100vw;
   height: 100vh;
+
+  overflow: hidden;
 }
 
 .filter {
@@ -99,6 +101,16 @@ export default {
   flex-grow: 4;
   width: 100%;
   height: 100%;
+}
+
+.main .view {
+  width: 90%;
+  height: 90%;
+
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .nav .title {
@@ -175,6 +187,7 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: 1;
   transform: translate(-50%, -50%);
 
   user-select: none;
