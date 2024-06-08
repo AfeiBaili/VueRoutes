@@ -43,24 +43,32 @@ export default {
 <template>
   <div id="app" ref="app">
     <div class="filter">
-      <!--   导航区域   -->
+      <!--导航区域-->
       <transition appear name="nav">
         <div v-show="!isHome" class="nav">
-          <div ref="title" class="title iconfont icon-fanhui" @click="isHome = true">目录列表</div>
+          <!--标题-->
+          <div ref="title" class="title iconfont icon-fanhui" @click="isHome = true">
+            目录列表
+          </div>
+          <!--列表-->
           <div v-for="i in routes" :key="i.pathName" class="item-list">
-            <router-link ref="item" :to="`/${i.pathName}`" active-class="active" class="item">{{ i.name }}
+            <router-link ref="item" :to="{path:`/${i.pathName}`,}" active-class="active" class="item">
+              {{ i.name }}
               <div class="item-background"></div>
             </router-link>
           </div>
         </div>
       </transition>
-      <!--   视图区域   -->
+      <!--视图区域-->
       <div class="main">
         <transition appear name="main">
-          <div v-show="isHome" class="title iconfont icon-fanhui-copy" @click="isHome = false">开始
+          <div v-show="isHome" class="title iconfont icon-fanhui-copy" @click="isHome = false">
+            开始
           </div>
         </transition>
+        <!--持久化<keep-alive include="*ComponentName">-->
         <router-view v-show="!isHome" class="view"></router-view>
+        <!--</keep-alive>-->
       </div>
     </div>
   </div>

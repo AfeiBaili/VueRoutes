@@ -1,13 +1,12 @@
 <script>
 export default {
-  name: 'TestComponent',
-  props:["name"]
+  name: "ChatRoom"
 }
 </script>
 
 <template>
   <div>
-    <h1>我是{{ name }}</h1>
+    我是聊天室
   </div>
 </template>
 

@@ -2,17 +2,27 @@
 
 export default {
   name: 'RoutesList',
-  data() {
-    return {}
-  },
+  computed: {
+    route() {
+      return this.$store.state.Routes.routes[0].route;
+    },
+  }
 }
 </script>
 
 <template>
   <transition appear name="container">
     <div class="container">
-      <div class="nav"></div>
-      <div class="main"></div>
+      <div class="sub-nav">
+        <router-link v-for="i in route" :key="i.pathName" :to="{
+          name: i.pathName,
+          query:{name:i.name}
+        }" active-class="active" class="sub-item">{{ i.name }}
+        </router-link>
+      </div>
+      <div class="main">
+        <router-view></router-view>
+      </div>
     </div>
   </transition>
 </template>
@@ -23,7 +33,7 @@ export default {
   height: 100%;
 }
 
-.container .nav {
+.container .sub-nav {
   display: flex;
   height: 5%;
   width: 100%;
@@ -39,6 +49,17 @@ export default {
   background-color: #2b2b2b;
 
   border-radius: 0 0 10px 10px;
+
+}
+
+.sub-nav .sub-item {
+  text-decoration: none;
+  color: white;
+  margin: 5px 0 0 10px;
+}
+
+.sub-nav .active {
+  color: gray;
 }
 
 .container-enter-active {
