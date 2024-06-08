@@ -8,11 +8,20 @@ export default {
   components: {},
   data() {
     return {
-      isHome: false,
+      isHome: true,
     }
   },
   computed: {
     ...mapState("Routes", ["routes"])
+  },
+  watch: {
+    isHome() {
+      if (this.isHome) {
+        document.title = "主页"
+      } else {
+        document.title = "目录列表"
+      }
+    }
   },
   store,
   router,

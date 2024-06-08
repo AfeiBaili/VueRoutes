@@ -16,7 +16,7 @@ export default {
       <div class="sub-nav">
         <router-link v-for="i in route" :key="i.pathName" :to="{
           name: i.pathName,
-          query:{name:i.name}
+          params:{name:i.name}
         }" active-class="active" class="sub-item">{{ i.name }}
         </router-link>
       </div>
